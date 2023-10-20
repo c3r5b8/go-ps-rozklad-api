@@ -22,7 +22,7 @@ func (t Teacher) ID() int {
 }
 
 // This function returns the teacher's type, which is always "teacher".
-func (t Teacher) Type() string {
+func (t Teacher) type_obj() string {
 	return "teacher"
 }
 

@@ -18,8 +18,8 @@ func (g Group) ID() int {
 	return g.Id
 }
 
-// Type returns the type of the group, which is always "group".
-func (g Group) Type() string {
+// type_obj returns the type of the group, which is always "group".
+func (g Group) type_obj() string {
 	return "group"
 }
 

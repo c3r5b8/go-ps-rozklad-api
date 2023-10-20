@@ -10,7 +10,7 @@ import (
 
 type Object interface {
 	ID() int
-	Type() string
+	type_obj() string
 }
 
 type Lesson struct {
@@ -67,7 +67,7 @@ func (a *Api) GetLessons(obj Object, start, end time.Time) ([]Lesson, error) {
 	url += "&begin_date=" + strconv.Itoa(startD) + "." + strconv.Itoa(int(startM)) + "." + strconv.Itoa(startY)
 	url += "&end_date=" + strconv.Itoa(endD) + "." + strconv.Itoa(int(endM)) + "." + strconv.Itoa(endY)
 	url += "&OBJ_ID=" + strconv.Itoa(obj.ID()) + "&ros_text=separated"
-	url += "&req_mode=" + obj.Type()
+	url += "&req_mode=" + obj.type_obj()
 
 	// Create a new HTTP request for the timetable export.
 	req, err := http.NewRequest("GET", url, nil)
@@ -99,7 +99,7 @@ func (a *Api) GetLessons(obj Object, start, end time.Time) ([]Lesson, error) {
 	for _, lesson := range exp.Timetable.RozItems {
 
 		// Convert the lesson export item to a Lesson struct.
-		less_new, err := convertLessonExportToLesson(lesson, obj.Type())
+		less_new, err := convertLessonExportToLesson(lesson, obj.type_obj())
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert lessonExport to Lesson: %v", err)
 		}

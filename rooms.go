@@ -20,8 +20,8 @@ func (r Room) ID() int {
 	return r.Id
 }
 
-// Type returns the type of the room, which is always "room".
-func (r Room) Type() string {
+// type_obj returns the type of the room, which is always "room".
+func (r Room) type_obj() string {
 	return "room"
 }
 // GetRooms gets list of all rooms.
