@@ -63,20 +63,49 @@ func convertLessonExportToLesson(les lessonExport, t string) (Lesson, error) {
 		less_new.CommentForLink = les.Comment4link
 	}
 
-	// If there is a Replacement field in `les`, handle it by updating the Title and Teacher fields in `less_new`.
+	// If there is a Replacement field in `les`, handle it by Replacement field in `less_new`.
 	if les.Replacement != "" {
-		if strings.HasSuffix(les.Replacement, "замість:") {
-			// If Replacement ends with "замість:", concatenate it with the Title field.
-			less_new.Title = les.Replacement + " " + les.Title
-		} else {
-			// Otherwise, split the Replacement field and update the Teacher field in `less_new` using the Teachers map.
-			teacherReplacmentSplit := strings.Split(les.Replacement, ":")
-			less_new.Teacher = Teachers[teacherReplacmentSplit[0][26:len(teacherReplacmentSplit[0])-16]]
-		}
+		less_new.Replacement.Teacher, less_new.Replacement.Title, less_new.Replacement.Type = convertReplacment(les.Replacement)
 	}
 
 	// Return the converted Lesson struct and a nil error.
 	return less_new, nil
+}
+
+// convertReplacment converts a replacement string to a Teacher struct, a title string, and a lesson type string.
+func convertReplacment(replacment string) (Teacher Teacher, title string, leson_typ string) {
+	// If the replacement string ends with "замість:", then it is a replacement for a teacher and a lesson.
+	if strings.HasSuffix(replacment, "замість:") {
+		// Get rid of the "Увага! Заміна! " and " замість:" prefixes.
+		replacment = replacment[26 : len(replacment)-16]
+
+		// Split the replacement string into a slice of strings.
+		replacmentSlice := strings.Split(replacment, " ")
+
+		// The first two strings in the slice are the teacher's name.
+		teacher := replacmentSlice[0]
+		teacher = strings.ReplaceAll(teacher, " ", " ")
+		Teacher = Teachers[teacher]
+
+		// The last string in the slice is the lesson type.
+		leson_typ = replacmentSlice[len(replacmentSlice)-1]
+
+		// Concatenate the remaining strings in the slice to form the title.
+		for i := 1; i < len(replacmentSlice)-2; i++ {
+			title += replacmentSlice[i] + " "
+		}
+		title += replacmentSlice[len(replacmentSlice)-2]
+	} else {
+		// If the replacement string does not end with "замість:", then it is a replacement for a teacher only.
+		replacmentSlice := strings.Split(replacment, ": ")
+
+		teacher := replacmentSlice[0][26 : len(replacmentSlice[0])-15]
+		teacher = strings.ReplaceAll(teacher, " ", " ")
+		Teacher = Teachers[teacher]
+	}
+
+	// Return the Teacher struct, the title string, and the lesson type string.
+	return Teacher, title, leson_typ
 }
 
 // Convert a string representing a date and time to two time.Time objects.

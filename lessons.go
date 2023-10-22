@@ -28,6 +28,11 @@ type Lesson struct {
 	Online         bool
 	URL            string
 	CommentForLink string
+	Replacement    struct {
+		Title   string
+		Teacher Teacher
+		Type    string
+	}
 }
 
 type lessonExport struct {
