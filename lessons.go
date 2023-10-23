@@ -111,6 +111,7 @@ func (a *Api) GetLessons(obj Object, start, end time.Time) ([]Lesson, error) {
 
 		// If the current lesson number is 0, add the lesson to the lessons_temp slice.
 		if num == 0 {
+			num = less_new.Number
 			lessons_temp = append(lessons_temp, less_new)
 		} else if less_new.Number == num {
 			// If the current lesson number is the same as the previous lesson number, add the lesson to the lessons_temp slice.
@@ -119,6 +120,7 @@ func (a *Api) GetLessons(obj Object, start, end time.Time) ([]Lesson, error) {
 			// If the current lesson number is different from the previous lesson number, convert the lessons_temp slice to a slice of Lesson structs and add it to the lessons slice. Then, clear the lessons_temp slice and add the current lesson to it.
 			lessons = append(lessons, convertLessons(lessons_temp)...)
 			lessons_temp = nil
+			num = 0
 			lessons_temp = append(lessons_temp, less_new)
 		}
 	}

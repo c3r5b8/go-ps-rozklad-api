@@ -56,7 +56,7 @@ func convertLessonExportToLesson(les lessonExport, t string) (Lesson, error) {
 	// Set the Day field in `less_new` to the Date field in `les`.
 	less_new.Day = les.Date
 
-	// Check if the Online field in `les` is "Так" (meaning "Yes"), and if so, set relevant fields in `less_new`.
+	// Check if the Online field in `les` is "Так" , and if so, set relevant fields in `less_new`.
 	if les.Online == "Так" {
 		less_new.Online = true
 		less_new.URL = les.Link
