@@ -4,6 +4,7 @@ package psrozklad
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 type Api struct {
@@ -73,7 +74,7 @@ func (a *Api) InitRooms() error {
 	for _, room := range rooms {
 		// The key of each entry in the map is the room's name and block, concatenated with a slash.
 		key := room.Name + "/" + room.Block
-		Rooms[key] = room
+		Rooms[strings.ToLower(key)] = room
 	}
 
 	// Return nil, indicating that the function was successful.
@@ -95,7 +96,7 @@ func (a *Api) InitGroups() error {
 	// Iterate over the list of groups and add each group to the Groups map.
 	for _, group := range groups {
 		// The key of each entry in the map is the group's name.
-		Groups[group.Name] = group
+		Groups[strings.ToLower(group.Name)] = group
 	}
 
 	// Return nil, indicating that the function was successful.
@@ -117,7 +118,7 @@ func (a *Api) InitTeachers() error {
 	// Iterate over the list of teachers and add each teacher to the Teachers map.
 	for _, teacher := range teachers {
 		// The key of each entry in the map is the teacher's short name.
-		Teachers[teacher.ShortName] = teacher
+		Teachers[strings.ToLower(teacher.ShortName)] = teacher
 	}
 
 	// Return nil, indicating that the function was successful.
