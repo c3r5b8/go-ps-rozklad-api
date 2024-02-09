@@ -27,10 +27,10 @@ func convertLessonExportToLesson(les lessonExport, t string) (Lesson, error) {
 	// Create a new Lesson struct and initialize it with some fields from the `les` struct.
 	less_new := Lesson{
 		Title:   les.Title,
-		Teacher: Teachers[les.Teacher],
+		Teacher: Teachers[strings.ToLower(les.Teacher)],
 		Type:    les.Type,
 	}
-	less_new.Room = Rooms[les.Room]
+	less_new.Room = Rooms[strings.ToLower(les.Room)]
 
 	// Use the convertTime function to parse lesson time and date, and assign the result to the StartTime and EndTime fields in `less_new`.
 	less_new.StartTime, less_new.EndTime, err = convertTime(les.Lesson_time, les.Date)
@@ -168,10 +168,10 @@ func convertStringToGroupes(obj, groups string) ([]Group, string, string) {
 
 	// If the groups string is empty, then the group is the same as the obj string.
 	if groups == "" {
-		gr_l = append(gr_l, Groups[obj])
+		gr_l = append(gr_l, Groups[strings.ToLower(obj)])
 	} else if strings.HasPrefix(groups, "(") {
 		// If the groups string starts with a parenthesis, then it is a subgroup.
-		gr_l = append(gr_l, Groups[obj])
+		gr_l = append(gr_l, Groups[strings.ToLower(obj)])
 		subGr = groups
 		gr_t = "підгр"
 	} else if strings.HasPrefix(groups, "Збірна група") {
@@ -180,7 +180,7 @@ func convertStringToGroupes(obj, groups string) ([]Group, string, string) {
 		subGr = s
 		groups := strings.Split(s, ", ")
 		for _, gr := range groups {
-			gr_l = append(gr_l, Groups[gr])
+			gr_l = append(gr_l, Groups[strings.ToLower(gr)])
 		}
 		gr_t = "Збірна група"
 	} else if strings.HasPrefix(groups, "Потік") {
@@ -189,12 +189,12 @@ func convertStringToGroupes(obj, groups string) ([]Group, string, string) {
 		subGr = s
 		groups := strings.Split(s, ", ")
 		for _, gr := range groups {
-			gr_l = append(gr_l, Groups[gr])
+			gr_l = append(gr_l, Groups[strings.ToLower(gr)])
 		}
 		gr_t = "Потік"
 	} else {
 		// Otherwise, the group is the same as the groups string.
-		gr_l = append(gr_l, Groups[groups])
+		gr_l = append(gr_l, Groups[strings.ToLower(groups)])
 	}
 
 	return gr_l, gr_t, subGr
